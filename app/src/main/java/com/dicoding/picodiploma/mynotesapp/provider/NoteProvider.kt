@@ -1,5 +1,6 @@
 package com.dicoding.picodiploma.mynotesapp.provider
 
+import android.annotation.SuppressLint
 import android.content.ContentProvider
 import android.content.ContentValues
 import android.content.Context
@@ -50,11 +51,13 @@ class NoteProvider : ContentProvider() {
         return null
     }
 
+    @SuppressLint("LongLogTag")
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         val added: Long = when (NOTE) {
             sUriMatcher.match(uri) -> noteHelper.insert(values)
             else -> 0
         }
+        Log.d("asdasd NoteProvider added", added.toString())
         context?.contentResolver?.notifyChange(CONTENT_URI, null)
         return Uri.parse("$CONTENT_URI/$added")
     }

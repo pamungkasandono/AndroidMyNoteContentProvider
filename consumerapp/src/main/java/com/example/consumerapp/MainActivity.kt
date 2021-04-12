@@ -1,4 +1,4 @@
-package com.dicoding.picodiploma.mynotesapp
+package com.example.consumerapp
 
 import android.content.Intent
 import android.database.ContentObserver
@@ -10,11 +10,10 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.picodiploma.mynotesapp.adapter.NoteAdapter
-import com.dicoding.picodiploma.mynotesapp.databinding.ActivityMainBinding
 import com.dicoding.picodiploma.mynotesapp.db.DatabaseContract.NoteColumns.Companion.CONTENT_URI
-import com.dicoding.picodiploma.mynotesapp.db.NoteHelper
 import com.dicoding.picodiploma.mynotesapp.entity.Note
 import com.dicoding.picodiploma.mynotesapp.helper.MappingHelper
+import com.example.consumerapp.databinding.ActivityMainBinding
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -35,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        supportActionBar?.title = "Notes"
+        supportActionBar?.title = "Customer Notes"
 
         binding.rvNotes.layoutManager = LinearLayoutManager(this)
         binding.rvNotes.setHasFixedSize(true)
@@ -74,8 +73,8 @@ class MainActivity : AppCompatActivity() {
     private fun loadNotesAsync() {
         GlobalScope.launch(Dispatchers.Main) {
             binding.progressbar.visibility = View.VISIBLE
-            val noteHelper = NoteHelper.getInstance(applicationContext)
-            noteHelper.open()
+//            val noteHelper = NoteHelper.getInstance(applicationContext)
+//            noteHelper.open()
             val deferredNotes = async(Dispatchers.IO) {
                 // CONTENT_URI = content://com.dicoding.picodiploma.mynotesapp/note
 //                val cursor = noteHelper.queryAll()
@@ -84,7 +83,7 @@ class MainActivity : AppCompatActivity() {
             }
             binding.progressbar.visibility = View.INVISIBLE
             val notes = deferredNotes.await()
-            noteHelper.close()
+//            noteHelper.close()
             if (notes.size > 0) {
                 adapter.listNotes = notes
             } else {
